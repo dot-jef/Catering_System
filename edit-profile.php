@@ -34,7 +34,13 @@
             if ($conn->query($update)){
                 $_SESSION['username'] = $newUsername;
                 $_SESSION['email'] = $newEmail;
-                header('Location: user/userhp.php');
+                $updateReservations = $conn->query("UPDATE catering_form SET username = '$newUsername', email = '$newEmail WHERE user_id = '$id'");
+                $updateContacts = $conn->query("UPDATE contact_form SET user_username = '$newUsername', user_email = '$newEmail WHERE user_id = '$id'");
+                if ($row['role'] == 'user'){
+                    header('Location: user/userhp.php');
+                } else if ($row['role'] == 'admin'){
+                    header('Location: admin/admin.php');
+                }
             }
         }
     }

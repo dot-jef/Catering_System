@@ -2,6 +2,21 @@
     session_start();
     include('../core/db.php');
 
+    if (!isset($_SESSION['username'])){
+        header('Location: ../homepage.php');
+        exit();
+    } else {
+        $username = $_SESSION['username'];
+        $sql = "SELECT * FROM users WHERE username='$username'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+    
+        // if the logged user is a user, redirect to user homepage
+        if ($row['role'] == 'admin'){
+            header('Location: ../admin/admin.php');
+        }
+    }
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Capture form data
         $id = $_SESSION['id'];
@@ -53,16 +68,16 @@
         <h2>EQUIPMENT PACKAGES</h2>
         <hr>
         <p>Package 1</p>
-        <a href="#"><img src="../Images\p1.png"/></a>
+        <a href="#" onclick="detailsmodal(1)"><img src="../Images\p1.png"/></a>
         <hr>
         <p>Package 2</p>
-        <a href="#"><img src="../Images\p2.png"/></a>
+        <a href="#" onclick="detailsmodal(2)"><img src="../Images\p2.png"/></a>
         <hr>
         <p>Package 3</p>
-        <a href="#"><img src="../Images\p3.png"/></a>
+        <a href="#" onclick="detailsmodal(3)"><img src="../Images\p3.png"/></a>
         <hr>
         <p>Package 4</p>
-        <a href="#"><img src="../Images\p4.png"/></a>
+        <a href="#" onclick="detailsmodal(4)"><img src="../Images\p4.png"/></a>
     </div>
     <div class="container col-4 mt-5 mb-5 p-4">
         <form method="post">
@@ -147,17 +162,59 @@
         <h2>FOODS PACKAGES</h2>
         <hr>
         <p>Package 1</p>
-        <a href="#"><img src="../Images\p11.jpg"/></a>
+        <a href="#" onclick="detailsmodal(11)"><img src="../Images\p11.jpg"/></a>
         <hr>
         <p>Package 2</p>
-        <a href="#"><img src="../Images\p22.jpg"/></a>
+        <a href="#" onclick="detailsmodal(22)"><img src="../Images\p22.jpg"/></a>
         <hr>
         <p>Package 3</p>
-        <a href="#"><img src="../Images\p33.jpg"/></a>
+        <a href="#" onclick="detailsmodal(33)"><img src="../Images\p33.jpg"/></a>
         <hr>
         <p>Package 4</p>
-        <a href="#"><img src="../Images\dessert.jpg"/></a>
+        <a href="#" onclick="detailsmodal(44)"><img src="../Images\dessert.jpg"/></a>
     </div>
     
+       
+    <!-- <div id="myModal" class="modal">
+
+    
+        <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+        </div>
+
+    </div> -->
+
+    <!-- <script>
+                // Get the modal
+        var modal = document.getElementById("modal");
+
+        // Get the button that opens the modal
+        var btns = document.getElementsByClassName("btn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("close")[0];
+
+        function detailsmodal(id){
+
+        }
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        // window.onclick = function(event) {
+        // if (event.target == modal) {
+        //     modal.style.display = "none";
+        // }
+        // }
+    </script> -->
 </body>
 </html>

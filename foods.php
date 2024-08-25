@@ -1,3 +1,22 @@
+<?php
+  session_start();
+  include('core/db.php');
+
+  if (isset($_SESSION['username'])){
+    $user = $_SESSION['username'];
+    $sql = "SELECT * FROM users WHERE username='$user'";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+
+    // if the logged user is a user, redirect to user homepage
+    if ($row['role'] == 'admin'){
+        header('Location: ../admin/admin.php');
+    }
+}
+    $conn->close();
+?>
+
+
 <html lang="en">
 
 <head>
@@ -27,7 +46,7 @@
                 <li><a href="#Pasta">Pasta</a></li>
                 <li><a href="#Package">Package</a></li>
             </ul>
-           <a href="functions/redirect.php"><h1 class="logo"><i class="fa fa fa-home"></i>FNOF</h1></a>
+           <a href="functions/hpredirect.php"><h1 class="logo"><i class="fa fa fa-home"></i>FNOF</h1></a>
         </div>
     </nav>  
     <section class="showcase-area" id="introduction">

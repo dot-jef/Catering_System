@@ -2,6 +2,21 @@
   session_start();
   include('../core/db.php');
 
+  if (!isset($_SESSION['username'])){
+    header('Location: ../homepage.php');
+    exit();
+} else {
+    $user = $_SESSION['username'];
+    $sql = "SELECT * FROM users WHERE username='$user'";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+
+    // if the logged user is a user, redirect to user homepage
+    if ($row['role'] == 'admin'){
+        header('Location: ../admin/admin.php');
+    }
+}
+
   $userID = $_SESSION['id'];
 
   $getreserves = "SELECT * FROM catering_form WHERE user_id = '$userID'";
@@ -46,7 +61,7 @@
           $refNo = htmlspecialchars($row['ref_no']);
           echo "<tr>
             <td>".$row['ref_no']."</td>
-            <td>".$row['location']."</td>
+            <td>".$row['location']." ,Landmark: ".$row['landmark']."</td>
             <td>".$row['date_time']."</td>
             <td>".$row['occasion']."</td>
             <td>".$row['equipment_pack']."</td>

@@ -5,14 +5,21 @@
     if (!isset($_SESSION['username'])){
         header('Location: ../homepage.php');
         exit();
+    } else {
+        $user = $_SESSION['username'];
+        $sql = "SELECT * FROM users WHERE username='$user'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+    
+        // if the logged user is a user, redirect to user homepage
+        if ($row['role'] == 'admin'){
+            header('Location: ../admin/admin.php');
+        }
     }
-
 
     $id = $_SESSION['id'];
     $username = $_SESSION['username'];
     $email = $_SESSION['email'];
-
-
 
 ?>
 
@@ -30,7 +37,6 @@
     <div class="profile-container">
         <h1>User Profile</h1>
         <div class="profile-info">
-            <h2><?php echo $username;?></h2>
             <p><strong>ID:</strong><?php echo $id;?></p>
             <p><strong>Username:</strong><?php echo $username;?></p>
             <p><strong>Email:</strong><?php echo $email;?></p>

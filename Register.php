@@ -3,7 +3,17 @@
     include('core/db.php');
 
     if (isset($_SESSION['username'])){
-        header('Location: user/userhp.php');
+        $user = $_SESSION['username'];
+        $sql = "SELECT * FROM users WHERE username='$user'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+    
+        // if the logged user is a user, redirect to user homepage
+        if ($row['role'] == 'user'){
+            header('Location: user/userhp.php');
+        } else {
+            header('Location: admin/admin.php');
+        }
     }
 
     function username(){
